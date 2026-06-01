@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import './App.css';
 import Navbar from './components/Navbar';
 import Dashboard from './pages/Dashboard';
 import Products from './pages/Products';
@@ -9,7 +10,7 @@ import Orders from './pages/Orders';
 function App() {
   return (
     <Router>
-      <div className="App" style={{ minHeight: '100vh', background: '#f4f6f9' }}>
+      <div className="App">
         {/* Navbar ab Router ke andar hai, ab useLocation kaam karega! */}
         <Navbar /> 
         <Routes>

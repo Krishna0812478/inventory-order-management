@@ -70,7 +70,7 @@ function Customers() {
 
   return (
     <div className="customers-container">
-      <div className="customers-header">
+      <div className="customers-header page-header">
         <h1>👥 Customer Directory</h1>
         <p>Manage customer profiles, contact records, and track accounts registered in the system.</p>
       </div>

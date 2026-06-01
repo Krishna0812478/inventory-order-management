@@ -1,120 +1,97 @@
-import React, { useState, useEffect } from 'react';
-import { getStats, getProducts } from '../api';
-
-function Dashboard() {
-  const [stats, setStats] = useState({ products: 0, customers: 0, orders: 0, revenue: 0 });
-  const [lowStockProducts, setLowStockProducts] = useState([]);
-
-  useEffect(() => {
-    async function loadDashboardData() {
-      try {
-        const statsData = await getStats();
-        setStats(statsData);
-        
-        const productsData = await getProducts();
-        const lowStock = productsData.filter(p => p.stock_quantity <= 5);
-        setLowStockProducts(lowStock);
-      } catch (error) {
-        console.error("Error loading dashboard data:", error);
-      }
-    }
-    loadDashboardData();
-  }, []);
-
-  // Inline Semantic UI Theme
-  const styles = {
-    container: { padding: '2rem', maxWidth: '1200px', margin: '0 auto', fontFamily: 'system-ui, sans-serif' },
-    welcome: { fontSize: '1.8rem', fontWeight: '700', color: '#1e293b', marginBottom: '0.25rem' },
-    sub: { color: '#64748b', marginBottom: '2rem' },
-    grid: { display: 'flex', gap: '1.5rem', flexWrap: 'wrap', marginBottom: '3rem' },
-    card: { flex: '1', minWidth: '240px', background: '#fff', padding: '1.5rem', borderRadius: '12px', display: 'flex', alignItems: 'center', gap: '1rem', border: '1px solid #e2e8f0', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' },
-    iconBox: { width: '48px', height: '48px', borderRadius: '10px', display: 'flex', alignItems: 'center', justifycenter: 'center', fontSize: '1.5rem' },
-    label: { fontSize: '0.85rem', fontWeight: '600', color: '#64748b', textTransform: 'uppercase' },
-    value: { fontSize: '1.5rem', fontWeight: '700', color: '#0f172a', marginTop: '0.25rem' },
-    tableCard: { background: '#fff', padding: '1.5rem', borderRadius: '12px', border: '1px solid #e2e8f0' },
-    tableHeader: { fontSize: '1.1rem', fontWeight: '700', color: '#1e293b', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' },
-    table: { width: '100%', borderCollapse: 'collapse', textAlign: 'left' },
-    th: { background: '#f8fafc', padding: '0.75rem 1rem', fontSize: '0.75rem', fontWeight: '700', color: '#475569', textTransform: 'uppercase', borderBottom: '1px solid #e2e8f0' },
-    td: { padding: '1rem', borderBottom: '1px solid #e2e8f0', fontSize: '0.9rem', color: '#334155' }
-  };
-
-  return (
-    <div style={styles.container}>
-      <h1 style={styles.welcome}>Welcome Back, Krishna! 👋</h1>
-      <p style={styles.sub}>Here's what's happening with your inventory today.</p>
-
-      {/* Grid Metrics Section */}
-      <div style={styles.grid}>
-        <div style={styles.card}>
-          <div style={{ ...styles.iconBox, background: '#e0e7ff', color: '#4f46e5', display:'flex', justifyContent:'center', alignItems:'center' }}>📦</div>
-          <div>
-            <div style={styles.label}>Total Products</div>
-            <div style={styles.value}>{stats.products}</div>
-          </div>
-        </div>
-        <div style={styles.card}>
-          <div style={{ ...styles.iconBox, background: '#ecfdf5', color: '#10b981', display:'flex', justifyContent:'center', alignItems:'center' }}>👥</div>
-          <div>
-            <div style={styles.label}>Total Customers</div>
-            <div style={styles.value}>{stats.customers}</div>
-          </div>
-        </div>
-        <div style={styles.card}>
-          <div style={{ ...styles.iconBox, background: '#fef3c7', color: '#f59e0b', display:'flex', justifyContent:'center', alignItems:'center' }}>🛍️</div>
-          <div>
-            <div style={styles.label}>Total Orders</div>
-            <div style={styles.value}>{stats.orders}</div>
-          </div>
-        </div>
-        <div style={styles.card}>
-          <div style={{ ...styles.iconBox, background: '#dcfce7', color: '#15803d', display:'flex', justifyContent:'center', alignItems:'center' }}>💰</div>
-          <div>
-            <div style={styles.label}>Total Revenue</div>
-            <div style={styles.value}>₹{stats.revenue.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</div>
-          </div>
-        </div>
-      </div>
-
-      {/* Low Stock Alerts */}
-      <div style={styles.tableCard}>
-        <h2 style={styles.tableHeader}>⚠️ Low Stock Alerts</h2>
-        {lowStockProducts.length === 0 ? (
-          <div style={{ padding: '1rem', background: '#ecfdf5', color: '#065f46', borderRadius: '8px', fontSize: '0.9rem' }}>
-            ✨ All products are sufficiently stocked!
-          </div>
-        ) : (
-          <div style={{ overflowX: 'auto' }}>
-            <table style={styles.table}>
-              <thead>
-                <tr>
-                  <th style={styles.th}>Product Name</th>
-                  <th style={styles.th}>SKU</th>
-                  <th style={styles.th}>Price</th>
-                  <th style={styles.th}>Remaining Stock</th>
-                  <th style={styles.th}>Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                {lowStockProducts.map(product => (
-                  <tr key={product.id}>
-                    <td style={styles.td}>{product.name}</td>
-                    <td style={styles.td}><code style={{ background: '#f1f5f9', padding: '0.2rem 0.4rem', borderRadius: '4px', color: '#b91c1c' }}>{product.sku}</code></td>
-                    <td style={styles.td}>₹{product.price}</td>
-                    <td style={{ ...styles.td, color: '#ef4444', fontWeight: '600' }}>{product.stock_quantity}</td>
-                    <td style={styles.td}>
-                      <span style={{ padding: '0.25rem 0.5rem', background: '#fee2e2', color: '#991b1b', borderRadius: '9999px', fontSize: '0.75rem', fontWeight: '600' }}>
-                        {product.stock_quantity === 0 ? 'Out of Stock' : 'Low Stock'}
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
-      </div>
-    </div>
-  );
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+  margin-bottom: 28px;
 }
 
-export default Dashboard;
+.stat-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-width: 0;
+  padding: 22px;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: var(--shadow-sm);
+}
+
+.stat-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  font-size: 1.45rem;
+  flex: 0 0 auto;
+}
+
+.stat-icon-product {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.stat-icon-customer {
+  background: #dcfce7;
+  color: #047857;
+}
+
+.stat-icon-order {
+  background: #fef3c7;
+  color: #b45309;
+}
+
+.stat-icon-revenue {
+  background: #ccfbf1;
+  color: #0f766e;
+}
+
+.stat-label {
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.stat-value {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  margin-top: 5px;
+  color: var(--nav-dark);
+  font-size: 1.65rem;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: 0;
+}
+
+.data-card {
+  padding: 28px;
+}
+
+@media (max-width: 1100px) {
+  .dashboard-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .dashboard-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 14px;
+  }
+
+  .stat-card {
+    padding: 18px;
+  }
+
+  .stat-value {
+    font-size: 1.35rem;
+  }
+
+  .data-card {
+    padding: 18px;
+  }
+}

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getProducts, createProduct, deleteProduct } from '../api';
+import './Products.css';
 
 function Products() {
   const [products, setProducts] = useState([]);
@@ -32,7 +33,7 @@ function Products() {
 
   return (
     <div className="products-container">
-      <div className="products-header">
+      <div className="products-header page-header">
         <h1>📦 Product Management</h1>
         <p>Add, update, view, or remove products from your central inventory database.</p>
       </div>
@@ -84,7 +85,7 @@ function Products() {
                       <td>{p.name}</td>
                       <td><code>{p.sku}</code></td>
                       <td>₹{parseFloat(p.price || 0).toFixed(2)}</td>
-                      <td style={{fontWeight: 'bold', color: stockValue === 0 ? '#dc2626' : '#1e293b'}}>
+                      <td className={stockValue === 0 ? 'danger-text' : 'fw-semibold'}>
                         {stockValue}
                       </td>
                       <td>

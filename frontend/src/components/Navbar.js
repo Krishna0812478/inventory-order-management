@@ -1,34 +1,24 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import './Navbar.css';
 
 function Navbar() {
   const location = useLocation();
-  
-  const styles = {
-    nav: { background: '#0f172a', padding: '0.75rem 2rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontFamily: 'system-ui, sans-serif', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)' },
-    logoContainer: { display: 'flex', alignItems: 'center', gap: '0.5rem', textDecoration: 'none' },
-    logoText: { color: '#fff', fontSize: '1.25rem', fontWeight: '700', letterSpacing: '-0.02em' },
-    links: { display: 'flex', gap: '0.5rem' },
-    link: { padding: '0.5rem 1rem', borderRadius: '8px', textDecoration: 'none', fontSize: '0.9rem', fontWeight: '600', transition: 'all 0.2s' }
-  };
 
-  const getLinkStyle = (path) => ({
-    ...styles.link,
-    background: location.pathname === path ? '#3b82f6' : 'transparent',
-    color: location.pathname === path ? '#fff' : '#94a3b8',
-  });
+  const getLinkClassName = (path) =>
+    location.pathname === path ? 'navbar-link active' : 'navbar-link';
 
   return (
-    <nav style={styles.nav}>
-      <Link to="/" style={styles.logoContainer}>
-        <span style={{fontSize: '1.4rem'}}>📦</span>
-        <span style={styles.logoText}>Inventory Manager</span>
+    <nav className="navbar">
+      <Link to="/" className="navbar-brand" aria-label="Inventory Manager dashboard">
+        <span className="navbar-logo">📦</span>
+        <span className="navbar-title">Inventory Manager</span>
       </Link>
-      <div style={styles.links}>
-        <Link to="/" style={getLinkStyle('/')}>Dashboard</Link>
-        <Link to="/products" style={getLinkStyle('/products')}>Products</Link>
-        <Link to="/customers" style={getLinkStyle('/customers')}>Customers</Link>
-        <Link to="/orders" style={getLinkStyle('/orders')}>Orders</Link>
+      <div className="navbar-links">
+        <Link to="/" className={getLinkClassName('/')} aria-current={location.pathname === '/' ? 'page' : undefined}>Dashboard</Link>
+        <Link to="/products" className={getLinkClassName('/products')} aria-current={location.pathname === '/products' ? 'page' : undefined}>Products</Link>
+        <Link to="/customers" className={getLinkClassName('/customers')} aria-current={location.pathname === '/customers' ? 'page' : undefined}>Customers</Link>
+        <Link to="/orders" className={getLinkClassName('/orders')} aria-current={location.pathname === '/orders' ? 'page' : undefined}>Orders</Link>
       </div>
     </nav>
   );
