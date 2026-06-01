@@ -11,6 +11,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap; /* Zaroori: Agar jagah na ho toh neeche shift ho jaye */
 }
 
 .navbar-title {
@@ -25,13 +26,15 @@
   gap: 10px;
   margin: 0;
   padding: 0;
+  flex-wrap: wrap; /* Zaroori: Mobile pe menu items wrap ho jayenge */
+  justify-content: center; /* Mobile pe center mein aa jayenge */
 }
 
 .navbar-menu button {
   background: none;
   border: none;
   color: white;
-  padding: 10px 20px;
+  padding: 10px 15px; /* Thoda padding kam kiya taaki mobile pe fit ho */
   cursor: pointer;
   font-size: 16px;
   border-radius: 4px;
@@ -44,4 +47,17 @@
 
 .navbar-menu button.active {
   background-color: #3498db;
+}
+
+/* --- RESPONSIVE MOBILE FIXES --- */
+@media (max-width: 600px) {
+  .navbar-container {
+    flex-direction: column; /* Title upar, menu niche */
+    gap: 10px;
+  }
+  
+  .navbar-menu button {
+    font-size: 14px; /* Mobile pe thoda chota font */
+    padding: 8px 12px;
+  }
 }

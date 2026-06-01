@@ -1,15 +1,224 @@
-.customers-container {
-  padding: 20px 0;
+.products-container, .customers-container, .orders-container {
+  padding: 2.5rem 2rem;
+  max-width: 1280px;
+  margin: 0 auto;
 }
 
-.customers-container h1 {
-  color: #2c3e50;
-  margin-bottom: 20px;
+.products-header h1, .customers-header h1, .orders-header h1 {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: var(--nav-dark);
+  letter-spacing: -0.03em;
 }
 
-.customers-content {
-  background: white;
-  padding: 20px;
+.products-header p, .customers-header p, .orders-header p {
+  color: var(--text-muted);
+  margin-top: 0.35rem;
+}
+
+/* Split Column Workspace Grid */
+.products-grid, .customers-grid, .orders-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  margin-top: 2.5rem;
+}
+
+@media (min-width: 992px) {
+  .products-grid, .customers-grid, .orders-grid {
+    grid-template-columns: 400px 1fr; /* Increased from 350px to stop container blowout */
+  }
+}
+
+.form-section-card, .list-section-card {
+  background: var(--bg-card);
+  border-radius: 16px;
+  padding: 2rem;
+  border: 1px solid var(--border-light);
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
+}
+
+.form-section-card h2, .list-section-card h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: var(--nav-dark);
+}
+
+.custom-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+/* Fixes the side-by-side spacing blowout for price and quantity */
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  width: 100%;
+}
+
+.form-group label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #475569;
+}
+
+.form-group input, .custom-select {
+  width: 100%;
+  padding: 0.75rem 0.85rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  color: var(--text-main);
+  background-color: #ffffff;
+  transition: all 0.2s ease;
+}
+
+.form-group input:focus, .custom-select:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
+}
+
+/* Call to action active states */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.8rem 1.5rem;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: #ffffff;
+}
+
+.btn-primary:hover {
+  background: var(--primary-hover);
+  transform: translateY(-1px);
+}
+
+/* Corporate Clean Data Tables styling */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: 12px;
+  border: 1px solid var(--border-light);
+}
+
+.products-table, .customers-table, .orders-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.products-table th, .customers-table th, .orders-table th {
+  background-color: #f8fafc;
+  padding: 1rem 1.25rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #475569;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.products-table td, .customers-table td, .orders-table td {
+  padding: 1.25rem;
+  border-bottom: 1px solid var(--border-light);
+  font-size: 0.95rem;
+  color: #334155;
+  vertical-align: middle;
+}
+
+.products-table tbody tr:hover, .customers-table tbody tr:hover, .orders-table tbody tr:hover {
+  background-color: #f8fafc;
+}
+
+/* Fixes code snippet badge overflows */
+code {
+  background: #f1f5f9;
+  padding: 0.2rem 0.5rem;
+  border-radius: 6px;
+  font-family: monospace;
+  font-size: 0.85rem;
+  color: #db2777;
+  font-weight: 600;
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.badge {
+  display: inline-flex;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.badge-success { background: var(--success-bg); color: #065f46; }
+.badge-warning { background: var(--warning-bg); color: #92400e; }
+.badge-danger { background: var(--danger-bg); color: #991b1b; }
+
+/* Control Action Row Buttons padding */
+.action-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.btn-action {
+  padding: 0.45rem 0.75rem;
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all 0.2s;
 }
+/* Responsive Grid: Mobile ke liye grid ko 1-column mein badalna */
+@media (max-width: 768px) {
+  .customers-grid {
+    grid-template-columns: 1fr !important; /* Form aur List ek ke niche ek aa jayenge */
+    gap: 1.5rem !important;
+  }
+
+  .customers-container {
+    padding: 1rem !important;
+  }
+
+  /* Table ko mobile pe horizontal scrollable banao */
+  .table-responsive {
+    overflow-x: auto !important;
+    width: 100%;
+    display: block;
+  }
+}
+
+/* Base Styles (In case missing hain) */
+.customers-grid {
+  display: grid;
+  grid-template-columns: 350px 1fr; /* Desktop pe side-by-side */
+  gap: 2rem;
+  align-items: start;
+}
+
+.btn-edit { color: var(--primary); background: #e0e7ff; }
+.btn-edit:hover { background: #c7d2fe; }
+.btn-delete { color: var(--danger); background: var(--danger-bg); }
+.btn-delete:hover { background: #fee2e2; }

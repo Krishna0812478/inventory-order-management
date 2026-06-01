@@ -8,3 +8,14 @@
   margin: 0 auto;
   padding: 20px;
 }
+
+
+@media (max-width: 768px) {
+  .customers-grid, .layout {
+    grid-template-columns: 1fr !important;
+  }
+  .table-responsive {
+    overflow-x: auto;
+    display: block;
+  }
+}
