@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { getCustomers, createCustomer, deleteCustomer } from '../api';
+import { getCustomers, createCustomer, deleteCustomer } from '../api'; // Maan ke chal rahe hain api.js mein ye functions hain
 import './Customers.css';
 
 function Customers() {
@@ -10,7 +10,11 @@ function Customers() {
   const [formData, setFormData] = useState({ name: '', email: '', phone: '' });
   const [uiMessage, setUiMessage] = useState({ text: '', type: '' });
 
-  // useCallback use kiya taaki useEffect mein error na aaye
+  const showNotification = useCallback((text, type) => {
+    setUiMessage({ text, type });
+    setTimeout(() => setUiMessage({ text: '', type: '' }), 4000);
+  }, []);
+
   const fetchCustomersList = useCallback(async () => {
     try {
       setLoading(true);
@@ -21,16 +25,11 @@ function Customers() {
     } finally {
       setLoading(false);
     }
-  }, []); // dependencies empty hain kyunki ye sirf mount par chalega
+  }, [showNotification]);
 
   useEffect(() => {
     fetchCustomersList();
-  }, [fetchCustomersList]); // Ab yahan error nahi aayegi
-
-  const showNotification = (text, type) => {
-    setUiMessage({ text, type });
-    setTimeout(() => setUiMessage({ text: '', type: '' }), 4000);
-  };
+  }, [fetchCustomersList]);
 
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -39,6 +38,7 @@ function Customers() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
+    // Frontend Validation (Assignment Section 6 Rule)
     if (!formData.name || !formData.email || !formData.phone) {
       showNotification('All fields are required to register a customer!', 'danger');
       return;
@@ -50,6 +50,7 @@ function Customers() {
       setFormData({ name: '', email: '', phone: '' });
       fetchCustomersList();
     } catch (error) {
+      // Unique Email validation error error response se nikalenge
       const errorMsg = error.response?.data?.detail || 'Failed to add customer. Make sure Email is unique!';
       showNotification(errorMsg, 'danger');
     }
@@ -69,38 +70,56 @@ function Customers() {
 
   return (
     <div className="customers-container">
-      {/* ... (Baki ka JSX waisa ka waisa hi rehne do, wo bilkul sahi hai) ... */}
       <div className="customers-header page-header">
         <h1>👥 Customer Directory</h1>
         <p>Manage customer profiles, contact records, and track accounts registered in the system.</p>
       </div>
 
+      {/* Notifications */}
       {uiMessage.text && (
         <div className={`ui-alert alert-${uiMessage.type}`}>
           {uiMessage.text}
         </div>
       )}
 
+      {/* Grid Layout */}
       <div className="customers-grid">
+        
+        {/* Registration Form */}
         <div className="form-section-card">
           <h2>➕ Add New Customer</h2>
           <form onSubmit={handleSubmit} className="custom-form">
             <div className="form-group">
               <label>Full Name</label>
-              <input type="text" name="name" value={formData.name} onChange={handleInputChange} placeholder="e.g. Krishna Gupta" />
+              <input 
+                type="text" name="name" value={formData.name} 
+                onChange={handleInputChange} placeholder="e.g. Krishna Gupta" 
+              />
             </div>
+
             <div className="form-group">
               <label>Email Address</label>
-              <input type="email" name="email" value={formData.email} onChange={handleInputChange} placeholder="e.g. krishna@example.com" />
+              <input 
+                type="email" name="email" value={formData.email} 
+                onChange={handleInputChange} placeholder="e.g. krishna@example.com" 
+              />
             </div>
+
             <div className="form-group">
               <label>Phone Number</label>
-              <input type="text" name="phone" value={formData.phone} onChange={handleInputChange} placeholder="e.g. 9876543210" />
+              <input 
+                type="text" name="phone" value={formData.phone} 
+                onChange={handleInputChange} placeholder="e.g. 9876543210" 
+              />
             </div>
-            <button type="submit" className="btn btn-primary">Register Customer</button>
+
+            <button type="submit" className="btn btn-primary">
+              Register Customer
+            </button>
           </form>
         </div>
 
+        {/* Directory List Table */}
         <div className="list-section-card">
           <h2>📋 Registered Profiles</h2>
           {loading ? (
@@ -138,6 +157,7 @@ function Customers() {
             </div>
           )}
         </div>
+
       </div>
     </div>
   );
